@@ -15,8 +15,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.example.smarthouse.URLRequestSmartHouse.generateURL;
-import static com.example.smarthouse.URLRequestSmartHouse.getResponseFromURL;
 import static com.example.smarthousema.URLRequestSmartHouse.generateURL;
 
 
@@ -37,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     int progressBarLight = 0;
     int progressBarSpeed = 0;
 
+
+
     public MainActivity() {
     }
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         linearLayoutScanResults = (LinearLayout) findViewById(R.id.linearLayoutScanResults);
         addressSpace = new AddressSpace();
-        final TextView textViewTest = (TextView) findViewById(R.id.textView14);
+        final TextView textView14 = (TextView) findViewById(R.id.textView14);
 
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
@@ -81,8 +81,10 @@ public class MainActivity extends AppCompatActivity {
                             if (url != null) {
                                 try {
                                     response = URLRequestSmartHouse.getResponseFromURL(url);
+                                    textView14.setText(response);
                                 } catch (IOException e) {
                                     e.printStackTrace();
+                                    textView14.setText("no answer");
                                 }
                             }
                         }
@@ -95,8 +97,10 @@ public class MainActivity extends AppCompatActivity {
                             if (url != null) {
                                 try {
                                     response = URLRequestSmartHouse.getResponseFromURL(url);
+                                    textView14.setText(response);
                                 } catch (IOException e) {
                                     e.printStackTrace();
+                                    textView14.setText("no answer");
                                 }
                             }
                         }
@@ -109,8 +113,10 @@ public class MainActivity extends AppCompatActivity {
                             if (url != null) {
                                 try {
                                     response = URLRequestSmartHouse.getResponseFromURL(url);
+                                    textView14.setText(response);
                                 } catch (IOException e) {
                                     e.printStackTrace();
+                                    textView14.setText("no answer");
                                 }
                             }
                         }
@@ -139,8 +145,10 @@ public class MainActivity extends AppCompatActivity {
                 if (url != null) {
                     try {
                         response = URLRequestSmartHouse.getResponseFromURL(url);
+                        textView14.setText(response);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        textView14.setText("no answer");
                     }
                 }
             }
@@ -162,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 if (url != null) {
                     try {
                         response = URLRequestSmartHouse.getResponseFromURL(url);
-//                        textView.setText(response);
+                        textView14.setText(response);
                     } catch (IOException e) {
                         e.printStackTrace();
-//                        textView.setText("no answer");
+                        textView14.setText("no answer");
                     }
                 }
             }
@@ -205,10 +213,10 @@ public class MainActivity extends AppCompatActivity {
                 if (url != null) {
                     try {
                         response = URLRequestSmartHouse.getResponseFromURL(url);
-                        textView.setText(response);
+                        textView14.setText(response);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        textView.setText("no answer");
+                        textView14.setText("no answer");
                     }
                 }
             }
@@ -234,10 +242,10 @@ public class MainActivity extends AppCompatActivity {
                 if (url != null) {
                     try {
                         response = URLRequestSmartHouse.getResponseFromURL(url);
-                        textView.setText(response);
+                        textView14.setText(response);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        textView.setText("no answer");
+                        textView14.setText("no answer");
                     }
                 }
             }
@@ -258,10 +266,10 @@ public class MainActivity extends AppCompatActivity {
                             if (url != null) {
                                 try {
                                     response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView.setText(response);
+                                    textView14.setText(response);
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    textView.setText("no answer");
+                                    textView14.setText("no answer");
                                 }
                             }
                             break;
@@ -271,10 +279,10 @@ public class MainActivity extends AppCompatActivity {
                             if (url != null) {
                                 try {
                                     response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView.setText(response);
+                                    textView14.setText(response);
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    textView.setText("no answer");
+                                    textView14.setText("no answer");
                                 }
                             }
                             break;
@@ -284,10 +292,10 @@ public class MainActivity extends AppCompatActivity {
                             if (url != null) {
                                 try {
                                     response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView.setText(response);
+                                    textView14.setText(response);
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    textView.setText("no answer");
+                                    textView14.setText("no answer");
                                 }
                             }
                             break;
@@ -299,10 +307,10 @@ public class MainActivity extends AppCompatActivity {
                     if (url != null) {
                         try {
                             response = URLRequestSmartHouse.getResponseFromURL(url);
-                            textView.setText(response);
+                            textView14.setText(response);
                         } catch (IOException e) {
                             e.printStackTrace();
-                            textView.setText("no answer");
+                            textView14.setText("no answer");
                         }
                     }
                 }
