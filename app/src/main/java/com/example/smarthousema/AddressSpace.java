@@ -6,9 +6,9 @@ public class AddressSpace {
     private String commandNumber = "";
     public String getURLcommand(int commandNumber){
         switch (commandNumber) {
-//            case 0:
-//                this.commandNumber = "00000000";                                                                      // Основное освещение;
-//                break;
+            case 0:
+                this.commandNumber = "00000000";                                                                      // Основное освещение;
+                break;
             case 128:
                 this.commandNumber = "01000000";                                                                        // Отключить все;
                 break;
@@ -67,11 +67,11 @@ public class AddressSpace {
                 this.commandNumber = "11101101";                                                                        // Бегущие частоты (высокие)
                 break;
             case 238:
-                this.commandNumber = "11101101";                                                                        // Анализатор спектра
+                this.commandNumber = "11101110";                                                                        // Анализатор спектра
                 break;
 
             default:
-                this.commandNumber = "00000000";                                                                        // Основное освещение;
+//                this.commandNumber = "00000000";                                                                        // Основное освещение;
                 break;
         }
         return this.commandNumber;
@@ -115,4 +115,3 @@ public class AddressSpace {
         return this.commandNumber;
     }
 }
-

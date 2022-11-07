@@ -1,6 +1,7 @@
 package com.example.smarthousema;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,39 +16,35 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.example.smarthousema.URLRequestSmartHouse.generateURL;
-
 
 public class MainActivity extends AppCompatActivity {
 
+    final String LOG_TAG = "SmartHouse";
+    Connection con;
+
     AddressSpace addressSpace;
-    String URLaddress = "http://192.168.0.105/SmartHouse/ESP32GWC/";
-    URL url;
+    String URLaddress = "http://XX.XXX.XXX.XXX///SmartHouse/ESP32GWC/";
     Uri builtUri;
     String[] selectingMode = { "Основное освещение", "Интерьерная подцветка", "Динамическое освещение"};
     String[] selectingSubMode = { "Постоянный свет", "Плавная смена цвета", "Бегущая радуга"};
     String[] selectingSubMode2 = { "Шкала громкости (градиент)", "Шкала громкости (радуга)", "Цветомузыка (5 полос)", "Цветомузыка (3 полосы)", "Цветомузыка (1 полоса - 3 частоты)", "Цветомузыка (1 полоса - низкие)", "Цветомузыка (1 полоса - средние)", "Цветомузыка (1 полоса - высокие)", "Стробоскоп", "Бегущие частоты (3 частоты)", "Бегущие частоты (низкие)", "Бегущие частоты (средние)", "Бегущие частоты (высокие)", "Анализатор спектра"};
 
     private LinearLayout linearLayoutScanResults;
-    private TextView textViewScanResults;
 
     boolean checkedSwitch = false;
     int progressBarLight = 0;
     int progressBarSpeed = 0;
-
-
-
-    public MainActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         linearLayoutScanResults = (LinearLayout) findViewById(R.id.linearLayoutScanResults);
         addressSpace = new AddressSpace();
-        final TextView textView14 = (TextView) findViewById(R.id.textView14);
+        final TextView textViewTest = (TextView) findViewById(R.id.textView14);
 
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
@@ -71,61 +68,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                String response = null;
                 switch (position) {
                     case 1: spinner2.setVisibility(View.VISIBLE);
                         spinner3.setVisibility(View.INVISIBLE);
                         if (checkedSwitch) {
                             builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(162 + spinner2.getSelectedItemPosition()));
-                            url = generateURL(builtUri);
-                            if (url != null) {
-                                try {
-                                    response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView14.setText(response);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    textView14.setText("no answer");
-                                }
-                            }
+                            textViewTest.setText(builtUri.toString());
+                            con = new Connection(builtUri);
+                            con.start();
                         }
                         break;
                     case 2: spinner2.setVisibility(View.INVISIBLE);
                         spinner3.setVisibility(View.VISIBLE);
                         if (checkedSwitch) {
                             builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(225 + spinner3.getSelectedItemPosition()));
-                            url = generateURL(builtUri);
-                            if (url != null) {
-                                try {
-                                    response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView14.setText(response);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    textView14.setText("no answer");
-                                }
-                            }
+                            textViewTest.setText(builtUri.toString());
+                            con = new Connection(builtUri);
+                            con.start();
                         }
                         break;
                     default: spinner2.setVisibility(View.INVISIBLE);
                         spinner3.setVisibility(View.INVISIBLE);
                         if (checkedSwitch) {
                             builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(0));
-                            url = generateURL(builtUri);
-                            if (url != null) {
-                                try {
-                                    response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView14.setText(response);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    textView14.setText("no answer");
-                                }
-                            }
+                            textViewTest.setText(builtUri.toString());
+                            con = new Connection(builtUri);
+                            con.start();
                         }
                         break;
                 }
+
             }
-
-
-
 
 
             @Override
@@ -137,19 +110,11 @@ public class MainActivity extends AppCompatActivity {
         AdapterView.OnItemSelectedListener itemSelectedListener2 = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String response = null;
                 if (checkedSwitch) {
                     builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(162 + position));
-                    url = generateURL(builtUri);
-                }
-                if (url != null) {
-                    try {
-                        response = URLRequestSmartHouse.getResponseFromURL(url);
-                        textView14.setText(response);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        textView14.setText("no answer");
-                    }
+                    textViewTest.setText(builtUri.toString());
+                    con = new Connection(builtUri);
+                    con.start();
                 }
             }
 
@@ -162,19 +127,11 @@ public class MainActivity extends AppCompatActivity {
         AdapterView.OnItemSelectedListener itemSelectedListener3 = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String response = null;
                 if (checkedSwitch) {
                     builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(225 + position));
-                    url = generateURL(builtUri);
-                }
-                if (url != null) {
-                    try {
-                        response = URLRequestSmartHouse.getResponseFromURL(url);
-                        textView14.setText(response);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        textView14.setText("no answer");
-                    }
+                    textViewTest.setText(builtUri.toString());
+                    con = new Connection(builtUri);
+                    con.start();
                 }
             }
 
@@ -207,18 +164,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String response = null;
-                builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(32, progressBarLight / 4));
-                url = generateURL(builtUri);
-                if (url != null) {
-                    try {
-                        response = URLRequestSmartHouse.getResponseFromURL(url);
-                        textView14.setText(response);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        textView14.setText("no answer");
-                    }
-                }
+                builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(32, progressBarLight/4));
+                textViewTest.setText(builtUri.toString());
+                con = new Connection(builtUri);
+                con.start();
             }
         });
 
@@ -236,18 +185,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String response = null;
                 builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(32, progressBarSpeed/4));
-                url = generateURL(builtUri);
-                if (url != null) {
-                    try {
-                        response = URLRequestSmartHouse.getResponseFromURL(url);
-                        textView14.setText(response);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        textView14.setText("no answer");
-                    }
-                }
+                textViewTest.setText(builtUri.toString());
+                con = new Connection(builtUri);
+                con.start();
+
             }
         });
 
@@ -256,67 +198,43 @@ public class MainActivity extends AppCompatActivity {
         switch1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String response = null;
                 checkedSwitch = ((Switch) v).isChecked();
                 if (checkedSwitch){
                     switch (spinner.getSelectedItemPosition()) {
                         case 1:
                             builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(162 + spinner2.getSelectedItemPosition()));
-                            url = generateURL(builtUri);
-                            if (url != null) {
-                                try {
-                                    response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView14.setText(response);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    textView14.setText("no answer");
-                                }
-                            }
+                            textViewTest.setText(builtUri.toString());
+                            con = new Connection(builtUri);
+                            con.start();
                             break;
                         case 2:
                             builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(225 + spinner3.getSelectedItemPosition()));
-                            url = generateURL(builtUri);
-                            if (url != null) {
-                                try {
-                                    response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView14.setText(response);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    textView14.setText("no answer");
-                                }
-                            }
+                            textViewTest.setText(builtUri.toString());
+                            con = new Connection(builtUri);
+                            con.start();
                             break;
                         default:
                             builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(0));
-                            url = generateURL(builtUri);
-                            if (url != null) {
-                                try {
-                                    response = URLRequestSmartHouse.getResponseFromURL(url);
-                                    textView14.setText(response);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    textView14.setText("no answer");
-                                }
-                            }
+                            textViewTest.setText(builtUri.toString());
+                            con = new Connection(builtUri);
+                            con.start();
                             break;
                     }
                 }
                 else{
                     builtUri = Uri.parse(URLaddress + addressSpace.getURLcommand(128));
-                    url = generateURL(builtUri);
-                    if (url != null) {
-                        try {
-                            response = URLRequestSmartHouse.getResponseFromURL(url);
-                            textView14.setText(response);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            textView14.setText("no answer");
-                        }
-                    }
+                    textViewTest.setText(builtUri.toString());
+                    con = new Connection(builtUri);
+                    con.start();
                 }
             }
         });
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,5 +263,37 @@ public class MainActivity extends AppCompatActivity {
         //headerView.setText(item.getTitle());
         return super.onOptionsItemSelected(item);
     }
-}
 
+    class Connection extends Thread {
+
+        Uri uri;
+        URL url;
+        HttpURLConnection connection;
+
+        public Connection(Uri uri) {
+            this.uri = uri;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            try {
+                url = new URL(uri.toString());
+                Log.i(LOG_TAG, String.valueOf(url.toString()));
+            } catch (MalformedURLException e) {
+                Log.i(LOG_TAG, String.valueOf(e.getMessage()));
+            }
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    Log.i(LOG_TAG, "HTTP_OK");
+                } else {
+                    Log.i(LOG_TAG, "ERROR");
+                }
+            } catch (IOException e) {
+                Log.i(LOG_TAG, String.valueOf(e.getMessage()));
+            }
+            connection.disconnect();
+        }
+    }
+}
